@@ -157,6 +157,31 @@ app.post('/clientes/login', (req, res) => {
   }
 });
 
+// Ruta para editar los datos de un cliente
+app.put('/clientes/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+
+  // Buscar el cliente
+  const cliente = clientes.find(c => c.id === id);
+
+  // Comprobar si existe
+  if (!cliente) {
+    return res.status(404).send({ message: 'Cliente no encontrado' });
+  }
+
+  // Actualizar sus datos
+  const { dni, nombre, direccion, telefono, email, password } = req.body;
+
+  cliente.dni = dni;
+  cliente.nombre = nombre;
+  cliente.direccion = direccion;
+  cliente.telefono = telefono;
+  cliente.email = email;
+  cliente.password = password;
+
+  res.status(200).send(cliente);
+});
+
 // Servidor escuchando
 app.listen(port, () => {
   console.log(`Servidor escuchando en el puerto: ${port}`);
